@@ -1,7 +1,8 @@
 import express from 'express';
-import { env } from '../constants';
-import morgan from 'morgan';
 import cors from 'cors';
+import morgan from 'morgan';
+import { env } from '../constants';
+import dB from './config/db';
 
 const app = express();
 const PORT = env.PORT;
@@ -14,7 +15,7 @@ app.use(
   })
 );
 
-app.use('/');
+dB;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
