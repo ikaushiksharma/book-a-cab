@@ -1,0 +1,10 @@
+dist
+.husky
+node_modules
+.env
+package.json
+package-lock.json
+.DS_Store
+.env.example
+tsconfig.json
+public
