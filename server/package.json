@@ -1,18 +1,18 @@
 {
-  "name": "node-typescript-starter",
+  "name": "cab-booking-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
-    "start": "nodemon dist/server.js",
+    "start": "nodemon dist/src/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "prettier": "prettier --write .",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "ikaushiksharma",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
