@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import { env } from '../constants';
@@ -7,7 +7,7 @@ import routes from './routes';
 const app = express();
 const PORT = env.PORT;
 
-app.use(morgan('combined'));
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(
   cors({
@@ -17,8 +17,12 @@ app.use(
 
 app.use('/api', routes);
 
-app.get('/', (req, res) => {
-  res.send('Server is Up and Working!');
+app.get('/', (req: Request, res: Response) => {
+  res.send('<h1>Server is Up and Working!</h1>');
+});
+
+app.get('*', (req: Request, res: Response) => {
+  res.status(404).json({ error: 'Not found' });
 });
 
 dB;

@@ -52,7 +52,7 @@ export const createPath = async (req: Request, res: Response) => {
 };
 
 export const shortestPath = async (req: Request, res: Response) => {
-  const { source, destination } = req.query;
+  const { source, destination } = req.body;
 
   if (!source || !destination) {
     return res
@@ -61,13 +61,16 @@ export const shortestPath = async (req: Request, res: Response) => {
   }
 
   try {
-    const shortestTime = await calculateShortestTime(source[0], destination[0]);
+    const shortestTime = await calculateShortestTime(source, destination);
 
+    if (shortestTime.error) {
+      return res.status(404).json({ error: shortestTime.error });
+    }
     if (shortestTime === null) {
       return res.status(404).json({ error: 'No path found' });
     }
 
-    res.json(200).json(shortestTime);
+    return res.status(200).json(shortestTime);
   } catch (error) {
     console.error('Error calculating shortest time', error);
     res.status(500).json({ error: 'Internal Server Error' });

@@ -13,6 +13,15 @@ export const createCab = async (req: Request, res: Response) => {
 
 export const getAvailableCabs = async (req: Request, res: Response) => {
   // TODO: Implement this function
+  // bruteforce implementation
+  try {
+    const { startTime } = req.body;
+    console.log(req.body);
+    const cabs = await Cab.find().populate('bookings');
+    console.log(cabs);
+  } catch (error) {
+    res.status(500).json({ error: 'Could not retrieve available cabs.' });
+  }
 };
 
 export const getAllCabs = async (req: Request, res: Response) => {

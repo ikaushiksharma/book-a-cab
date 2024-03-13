@@ -1,44 +1,53 @@
+import Cab from '../models/cab';
 import Booking from '../models/booking';
 import { calculateShortestTime } from './path';
+import { Request, Response } from 'express';
+import sendMail from '../utils/mailSender';
 
-export const createBooking = async (req, res) => {
+export const createBooking = async (req: Request, res: Response) => {
   try {
-    const { source, destination, email, cab, startTime } = req.body;
-
+    const { source, destination, email, cabName, scheduledTime } = req.body;
+    const cab = await Cab.findOne({ name: cabName });
     const estimatedTime = await calculateShortestTime(source, destination);
-    const bookingPrice = estimatedTime.time * cab?.price;
-
-    // TODO: complete this function
-    // Create the booking in the database
-    // const newBooking = new Booking({
-    //   source,
-    //   destination,
-    //   email,
-    //   cab: cab,
-    //   bookingPrice: bookingPrice,
-    //   status: 'scheduled',
-    // });
-
-    // await newBooking.save();
+    const price = estimatedTime.time * cab?.price;
+    let startTime = new Date();
+    if (scheduledTime) {
+      startTime = new Date(scheduledTime);
+    }
+    const endTime = new Date(startTime.getTime() + estimatedTime.time * 60000);
+    console.log(endTime);
+    // save booking into the database
+    const newBooking = await Booking.create({
+      source,
+      destination,
+      email,
+      cab: cab._id,
+      startTime,
+      endTime: endTime,
+      price,
+    });
 
     // update cab time slots and status
-    // await Cab.findByIdAndUpdate(cab._id, {
-    //   $set: {
-    //     busyDuration: new Date(
-    //       new Date().getTime() + estimatedTime.time * 60000
-    //     ),
-    //   },
-    // });
+    cab.bookings.push(newBooking._id);
+    await cab.save();
 
     // send mail
-    // res.status(201).json(newBooking);
+    sendMail({
+      email,
+      source,
+      destination,
+      startTime: startTime.toISOString(),
+      endTime: newBooking.endTime.toISOString(),
+      price,
+    });
+    res.status(201).json(newBooking);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Could not create a new booking.' });
   }
 };
 
-export const getAllBookings = async (req, res) => {
+export const getAllBookings = async (req: Request, res: Response) => {
   try {
     const bookings = await Booking.find();
     res.status(200).json(bookings);
@@ -47,7 +56,7 @@ export const getAllBookings = async (req, res) => {
   }
 };
 
-export const getBookingById = async (req, res) => {
+export const getBookingById = async (req: Request, res: Response) => {
   try {
     const booking = await Booking.findById(req.params.id);
     if (!booking) {
@@ -59,7 +68,7 @@ export const getBookingById = async (req, res) => {
   }
 };
 
-export const updateBooking = async (req, res) => {
+export const updateBooking = async (req: Request, res: Response) => {
   try {
     const updatedBooking = await Booking.findByIdAndUpdate(
       req.params.id,
@@ -75,7 +84,7 @@ export const updateBooking = async (req, res) => {
   }
 };
 
-export const cancelBooking = async (req, res) => {
+export const cancelBooking = async (req: Request, res: Response) => {
   try {
     const updatedBooking = await Booking.findByIdAndUpdate(
       req.params.id,
