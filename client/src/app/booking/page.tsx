@@ -10,23 +10,33 @@ type Props = {};
 
 const Page = (props: Props) => {
   const [bookings, setBookings] = useState<Array<BookingType>>([]);
+  const fetchBookings = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/booking/all`);
+      console.log(response.data);
+      const bookings = handleBookingData(response.data);
+      console.log(bookings);
+      setBookings(bookings);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/booking/all`);
-        console.log(response.data);
-        const bookings = handleBookingData(response.data)
-        console.log(bookings)
-        setBookings(bookings);
-        
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+    fetchBookings();
     return () => {
       setBookings([]);
     };
   }, []);
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_API}/booking/${id}`);
+      console.log(response.data);
+      await fetchBookings();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="min-h-screen pb-64 h-fit">
@@ -44,7 +54,9 @@ const Page = (props: Props) => {
           {bookings.map(
             ({ source, destination, price, email, cabImage, startTime, endTime, id }) => (
               <BookingCard
+                onDelete={handleDelete}
                 key={id}
+                id={id}
                 source={source}
                 destination={destination}
                 price={price}
