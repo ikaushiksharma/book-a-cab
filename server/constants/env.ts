@@ -6,4 +6,5 @@ export const env = {
   MONGO_URI: process.env.MONGO_URI,
   MAIL_USER: process.env.MAIL_USER,
   MAIL_PASS: process.env.MAIL_PASS,
+  CLIENT_URL: process.env.CLIENT_URL,
 };
