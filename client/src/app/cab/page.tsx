@@ -4,27 +4,25 @@ import BookingCard from "@/components/bookings/card";
 import Heading from "@/shared/Heading";
 import axios from "axios";
 import { handleBookingData } from "@/lib/helper";
-import { BookingType } from "@/types";
+import { BookingType, CabType } from "@/types";
+import CabCard from "@/components/cabs/card";
 
 type Props = {};
 
 const page = (props: Props) => {
-  const [bookings, setBookings] = useState<Array<BookingType>>([]);
+  const [cabs, setCabs] = useState<Array<CabType>>([]);
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/booking/all`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/cab/all`);
         console.log(response.data);
-        const bookings = handleBookingData(response.data)
-        console.log(bookings)
-        setBookings(bookings);
-        
+        setCabs(response.data);
       } catch (error) {
         console.error(error);
       }
     })();
     return () => {
-      setBookings([]);
+      setCabs([]);
     };
   }, []);
 
@@ -32,29 +30,18 @@ const page = (props: Props) => {
     <div className="min-h-screen pb-64 h-fit">
       <div className="flex items-center justify-center my-6">
         <Heading isMain className="text-7xl">
-          All Bookings
+          All Cabs
         </Heading>
       </div>
-      {bookings.length <= 0 ? (
+      {cabs.length <= 0 ? (
         <div className="flex items-center justify-center">
-          <Heading className="text-4xl">No Bookings</Heading>
+          <Heading className="text-4xl">No Cabs Available</Heading>
         </div>
       ) : (
         <div className="grid grid-cols-1 mt-12 md:grid-cols-2 lg:grid-cols-3 gap-10 w-full">
-          {bookings.map(
-            ({ source, destination, price, email, cabImage, startTime, endTime, id }) => (
-              <BookingCard
-                key={id}
-                source={source}
-                destination={destination}
-                price={price}
-                email={email}
-                startTime={startTime}
-                endTime={endTime}
-                cabImage={cabImage}
-              />
-            ),
-          )}
+          {cabs.map(({ name, price, image, id }) => (
+            <CabCard key={id} name={name} price={price} image={image} id={id} />
+          ))}
         </div>
       )}
     </div>

@@ -1,10 +1,70 @@
+"use client";
+import React, { useId, useState } from "react";
+import { Button } from "antd";
+import axios from "axios";
+
+import CabCard from "@/components/cabs/card";
 import BookingForm from "@/components/forms/bookingForm";
 import Heading from "@/shared/Heading";
-import React from "react";
+import { CabType } from "@/types";
 
-type Props = {};
+const Page = () => {
+  const key = useId();
+  const [cabs, setCabs] = useState<null | Array<CabType>>(null);
+  const [data, setData] = useState<{ email: string; source: string; destination: string }>();
+  const [minTime, setMinTime] = useState(-1);
+  const [loading, setLoading] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+  const [selectedCab, setSelectedCab] = useState(null);
+  const getAvailableCabs = async () => {
+    setLoading(true);
+    setDisabled(true);
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/cab/available-cabs`);
+      console.log(response);
+      const cabs = response.data;
+      setCabs(cabs);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleSubmit = async () => {
+    try {
+      if (!data || !selectedCab) {
+        throw new Error("Data not available");
+      }
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/booking/create`, {
+        ...data,
+        cabId: selectedCab,
+      });
+      console.log(response);
+      getAvailableCabs();
+      setDisabled(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const getShortestTime = async (data: any) => {
+    try {
+      console.log(data);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/path/shortest-path`,
+        data,
+      );
+      const { time } = response.data;
+      setData(data);
+      setMinTime(time);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleReset = () => {
+    setMinTime(-1);
+    setCabs(null);
+    setSelectedCab(null);
+  };
 
-const Page = (props: Props) => {
   return (
     <div className="min-h-screen pb-64 h-fit">
       <div className="flex items-center justify-center my-6">
@@ -13,15 +73,42 @@ const Page = (props: Props) => {
         </Heading>
       </div>
       <div className="flex flex-col mt-12 max-w-3xl mx-auto items-center justify-center">
-        <BookingForm />
+        <BookingForm disabled={disabled} onSubmit={getShortestTime} onReset={handleReset} />
         <div className="flex flex-col gap-12">
-          <div className="flex flex-col items-center justify-center">
-            <h2 className="text-xl capitalize">Minimum Time Required to reach location</h2>
-            <p className="text-2xl font-medium">{20 + " min"}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            <h2 className="text-xl capitalize">Available Cabs</h2>
-          </div>
+          {minTime != -1 && (
+            <>
+              <div className="flex flex-col items-center justify-center">
+                <h2 className="text-xl capitalize">Minimum Time Required to reach location</h2>
+                <p className="text-2xl font-medium">{`${minTime} minutes`}</p>
+              </div>
+              <Button style={{ background: "#24a0ed" }} type="primary" onClick={getAvailableCabs}>
+                Get Available Cabs
+              </Button>
+            </>
+          )}
+          {cabs &&
+            (cabs.length == 0 ? (
+              <h2 className="text-xl text-center capitalize">No cabs available</h2>
+            ) : (
+              <div className="flex flex-col gap-6 items-center justify-center">
+                <h2 className="text-xl capitalize">Available Cabs</h2>
+                <div className="grid lg:grid-cols-3 gap-6 md:grid-cols-2 grid-cols-1">
+                  {cabs.map((cab: any) => {
+                    return (
+                      <CabCard
+                        onSelect={setSelectedCab}
+                        selected={selectedCab === cab.id}
+                        key={key}
+                        {...cab}
+                      />
+                    );
+                  })}
+                </div>
+                <Button style={{ background: "#24a0ed" }} type="primary" onClick={handleSubmit}>
+                  Confirm Booking
+                </Button>
+              </div>
+            ))}
         </div>
       </div>
     </div>

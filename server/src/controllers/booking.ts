@@ -7,10 +7,10 @@ import { print } from '../utils';
 
 export const createBooking = async (req: Request, res: Response) => {
   try {
-    const { source, destination, email, cabName } = req.body;
-    const cab = await Cab.findOne({ name: cabName });
+    const { source, destination, email, cabId } = req.body;
+    const cab = await Cab.findById(cabId);
     const estimatedTime = await calculateShortestTime(source, destination);
-    const price = estimatedTime.time * cab?.price;
+    const price = estimatedTime.time * cab.price;
     let startTime = new Date();
     const endTime = new Date(startTime.getTime() + estimatedTime.time * 60000);
     // save booking into the database
@@ -18,7 +18,7 @@ export const createBooking = async (req: Request, res: Response) => {
       source,
       destination,
       email,
-      cab: cab._id,
+      cab: cabId,
       startTime,
       endTime: endTime,
       price,
@@ -47,7 +47,7 @@ export const createBooking = async (req: Request, res: Response) => {
 
 export const getAllBookings = async (req: Request, res: Response) => {
   try {
-    const bookings = await Booking.find();
+    const bookings = await Booking.find().populate('cab');
     res.status(200).json(bookings);
   } catch (error) {
     res.status(500).json({ error: 'Could not retrieve bookings.' });

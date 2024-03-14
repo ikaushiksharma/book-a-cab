@@ -3,16 +3,22 @@ import React from "react";
 import { Button, Form, Input, Select, Space } from "antd";
 
 const { Option } = Select;
-
-const BookingForm: React.FC = () => {
+type Props = {
+  onSubmit(data: any): void;
+  onReset(): void;
+  disabled?: boolean;
+};
+const BookingForm = ({ onSubmit, disabled, onReset }: Props) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: any) => {
     console.log(values);
+    onSubmit(values);
   };
 
-  const onReset = () => {
+  const handleReset = () => {
     form.resetFields();
+    onReset();
   };
 
   const layout = {
@@ -24,7 +30,7 @@ const BookingForm: React.FC = () => {
     wrapperCol: { offset: 10, span: 40 },
   };
   return (
-    <Form {...layout} form={form} style={{ width: "75%" }} onFinish={onFinish}>
+    <Form disabled={disabled} {...layout} form={form} style={{ width: "75%" }} onFinish={onFinish}>
       <Form.Item
         name="email"
         label="Email Address"
@@ -63,9 +69,9 @@ const BookingForm: React.FC = () => {
       <Form.Item {...tailLayout}>
         <Space>
           <Button type="primary" style={{ background: "#24a0ed" }} htmlType="submit">
-            Find Cabs Available
+            Continue
           </Button>
-          <Button htmlType="button" onClick={onReset}>
+          <Button htmlType="button" onClick={handleReset}>
             Reset
           </Button>
         </Space>

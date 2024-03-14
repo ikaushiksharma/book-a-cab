@@ -52,15 +52,14 @@ export const createPath = async (req: Request, res: Response) => {
 };
 
 export const shortestPath = async (req: Request, res: Response) => {
-  const { source, destination } = req.body;
-
-  if (!source || !destination) {
-    return res
-      .status(400)
-      .json({ error: 'Source and destination are required' });
-  }
-
   try {
+    const { source, destination } = req.body;
+    if (!source || !destination) {
+      return res
+        .status(400)
+        .json({ error: 'Source and destination are required' });
+    }
+
     const shortestTime = await calculateShortestTime(source, destination);
 
     if (shortestTime.error) {

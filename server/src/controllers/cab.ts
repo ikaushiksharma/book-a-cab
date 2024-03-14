@@ -20,9 +20,14 @@ export const getAvailableCabs = async (req: Request, res: Response) => {
         { availableFrom: { $lte: new Date() } },
       ],
     });
-
-    print.message(cabs);
-    res.status(200).json(cabs);
+    const cabData = cabs.map((cab) => ({
+      id: cab._id,
+      name: cab.name,
+      price: cab.price,
+      image: cab.image,
+    }));
+    print.message(cabData);
+    res.status(200).json(cabData);
   } catch (error) {
     print.error(error);
     res.status(500).json({ error: 'Could not retrieve available cabs.' });
