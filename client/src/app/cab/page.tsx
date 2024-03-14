@@ -9,7 +9,7 @@ import CabCard from "@/components/cabs/card";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
   const [cabs, setCabs] = useState<Array<CabType>>([]);
   useEffect(() => {
     (async () => {
@@ -48,4 +48,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

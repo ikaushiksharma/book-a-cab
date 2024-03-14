@@ -4,7 +4,7 @@ import SectionHeader from "@/components/landing/heroSection";
 import AboutUs from "@/components/landing/aboutUs";
 import LocationSlider from "@/components/landing/locationSlider";
 
-const page = () => {
+const Page = () => {
   return (
     <div className="relative">
       <div className="rounded-2xl bg-custom-gray py-20">
@@ -22,4 +22,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
