@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { Button, Form, Input, Select, Space } from "antd";
-import { bookingForm } from "@/data/content";
 
 const { Option } = Select;
 

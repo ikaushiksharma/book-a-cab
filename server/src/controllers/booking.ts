@@ -3,6 +3,7 @@ import Booking from '../models/booking';
 import { calculateShortestTime } from './path';
 import { Request, Response } from 'express';
 import sendMail from '../utils/mailSender';
+import { print } from '../utils';
 
 export const createBooking = async (req: Request, res: Response) => {
   try {
@@ -39,7 +40,7 @@ export const createBooking = async (req: Request, res: Response) => {
     });
     res.status(201).json(newBooking);
   } catch (error) {
-    console.log(error);
+    print.error(error);
     res.status(500).json({ error: 'Could not create a new booking.' });
   }
 };

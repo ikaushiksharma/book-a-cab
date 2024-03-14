@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Cab from '../models/cab';
+import { print } from '../utils';
 
 export const createCab = async (req: Request, res: Response) => {
   try {
@@ -20,10 +21,10 @@ export const getAvailableCabs = async (req: Request, res: Response) => {
       ],
     });
 
-    console.log(cabs);
+    print.message(cabs);
     res.status(200).json(cabs);
   } catch (error) {
-    console.error(error);
+    print.error(error);
     res.status(500).json({ error: 'Could not retrieve available cabs.' });
   }
 };

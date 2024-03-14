@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import { env } from '../constants';
 import dB from './config/db';
 import routes from './routes';
+import { print } from './utils';
 const app = express();
 const PORT = env.PORT;
 
@@ -28,5 +29,5 @@ app.get('*', (req: Request, res: Response) => {
 dB;
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  print.message(`Server is running on port ${PORT}`);
 });

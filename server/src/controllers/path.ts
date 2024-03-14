@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Path from '../models/path';
-import { Graph } from '../utils';
+import { Graph, print } from '../utils';
 
 export async function calculateShortestTime(
   source: string,
@@ -42,11 +42,11 @@ export async function calculateShortestTime(
 export const createPath = async (req: Request, res: Response) => {
   try {
     const { source, destination, timeInMinutes } = req.body;
-    console.log({ source, destination, timeInMinutes });
+    print.message([source, destination, timeInMinutes]);
     const path = await Path.create({ source, destination, timeInMinutes });
     res.status(201).json(path);
   } catch (error) {
-    console.log(error);
+    print.error(error);
     res.status(500).json({ error: 'Could not create path.' });
   }
 };
