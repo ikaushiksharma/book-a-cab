@@ -31,11 +31,6 @@ const bookingSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Price is required'],
     },
-    status: {
-      type: String,
-      default: 'scheduled',
-      enum: ['scheduled', 'cancelled'],
-    },
   },
   { timestamps: true }
 );

@@ -84,13 +84,7 @@ export const updateBooking = async (req: Request, res: Response) => {
 
 export const cancelBooking = async (req: Request, res: Response) => {
   try {
-    const updatedBooking = await Booking.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: { status: 'cancelled' },
-      },
-      { new: true }
-    );
+    const updatedBooking = await Booking.findByIdAndDelete(req.params.id);
 
     await Cab.findByIdAndUpdate(updatedBooking.cab._id, {
       $pull: {
@@ -98,7 +92,7 @@ export const cancelBooking = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(200).json(updatedBooking);
+    res.status(200).json({ message: 'Booking cancelled successfully.' });
   } catch (error) {
     res.status(500).json({ error: 'Could not delete the booking.' });
   }

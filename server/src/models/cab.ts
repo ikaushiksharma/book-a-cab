@@ -5,7 +5,12 @@ const cabSchema = new mongoose.Schema({
   price: { type: Number, required: [true, 'Price is required'] },
   availableFrom: { type: Date, default: null, required: false },
   image: { type: String, required: false },
-  bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking' }],
+  bookings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Booking',
+    },
+  ],
 });
 
 const Cab = mongoose.model('Cab', cabSchema);
