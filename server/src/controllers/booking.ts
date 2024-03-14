@@ -6,16 +6,12 @@ import sendMail from '../utils/mailSender';
 
 export const createBooking = async (req: Request, res: Response) => {
   try {
-    const { source, destination, email, cabName, scheduledTime } = req.body;
+    const { source, destination, email, cabName } = req.body;
     const cab = await Cab.findOne({ name: cabName });
     const estimatedTime = await calculateShortestTime(source, destination);
     const price = estimatedTime.time * cab?.price;
     let startTime = new Date();
-    if (scheduledTime) {
-      startTime = new Date(scheduledTime);
-    }
     const endTime = new Date(startTime.getTime() + estimatedTime.time * 60000);
-    console.log(endTime);
     // save booking into the database
     const newBooking = await Booking.create({
       source,
@@ -28,6 +24,7 @@ export const createBooking = async (req: Request, res: Response) => {
     });
 
     // update cab time slots and status
+    cab.availableFrom = newBooking.endTime;
     cab.bookings.push(newBooking._id);
     await cab.save();
 
@@ -36,8 +33,8 @@ export const createBooking = async (req: Request, res: Response) => {
       email,
       source,
       destination,
-      startTime: startTime.toISOString(),
-      endTime: newBooking.endTime.toISOString(),
+      startTime: startTime.toLocaleString(),
+      endTime: newBooking.endTime.toLocaleString(),
       price,
     });
     res.status(201).json(newBooking);
@@ -93,6 +90,12 @@ export const cancelBooking = async (req: Request, res: Response) => {
       },
       { new: true }
     );
+
+    await Cab.findByIdAndUpdate(updatedBooking.cab._id, {
+      $pull: {
+        bookings: req.params.id,
+      },
+    });
 
     res.status(200).json(updatedBooking);
   } catch (error) {
