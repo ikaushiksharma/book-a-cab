@@ -9,12 +9,12 @@ export const navLinks = [
   },
   {
     id: "hjv44",
-    href: "/#",
+    href: "/booking",
     name: "Bookings",
   },
   {
     id: "bdf00",
-    href: "/#",
+    href: "/cab",
     name: "Cabs",
   },
 ];

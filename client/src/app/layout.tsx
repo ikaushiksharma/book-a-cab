@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.className} border-red-500 max-w-screen-2xl mx-auto`}>
+      <body className={`${dmSans.className} bg-zinc-100 border max-w-screen-2xl mx-auto`}>
         <Header />
         {children}
         <Footer />
