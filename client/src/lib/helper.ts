@@ -12,3 +12,14 @@ export const handleBookingData = (data: any) => {
     };
   });
 };
+
+export const handleCabData = (data: any) => {
+  return data.map((cab: any) => {
+    return {
+      id: cab._id,
+      name: cab.name,
+      price: cab.price,
+      image: cab.image,
+    };
+  });
+};
