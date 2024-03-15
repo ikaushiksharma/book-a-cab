@@ -60,8 +60,8 @@ const Page = (props: Props) => {
         </Heading>
       </div>
       {bookings.length <= 0 ? (
-        <div className="flex items-center justify-center">
-          <Heading className="text-4xl">No Bookings</Heading>
+        <div className="flex items-center py-[20vh] justify-center">
+          <Heading className="text-sm text-zinc-500">No Bookings!</Heading>
         </div>
       ) : (
         <div className="grid grid-cols-1 mt-12 md:grid-cols-2 lg:grid-cols-3 gap-10 w-full">
