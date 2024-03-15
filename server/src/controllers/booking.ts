@@ -30,7 +30,7 @@ export const createBooking = async (req: Request, res: Response) => {
     await cab.save();
 
     // send mail
-    sendMail({
+    await sendMail({
       email,
       source,
       destination,
