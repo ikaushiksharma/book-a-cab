@@ -1,4 +1,4 @@
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import React, { useEffect } from "react";
 
 type Props = {
@@ -42,12 +42,11 @@ function EditCabModal({
         onCancel={handleCancel}
         footer={[]}
       >
-        <div className="w-full py-5 px-28">
+        <div className="w-full py-5 px-12">
           <Form
             form={form}
-            name="basic"
             labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
+            wrapperCol={{ span: 40 }}
             style={{ maxWidth: 650 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
@@ -88,7 +87,7 @@ function EditCabModal({
                 htmlType="submit"
                 style={{
                   color: "white",
-                  backgroundColor: "green",
+                  backgroundColor: "#24a0ed",
                   height: "40px",
                 }}
               >

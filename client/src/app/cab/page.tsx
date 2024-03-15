@@ -1,10 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import BookingCard from "@/components/bookings/card";
 import Heading from "@/shared/Heading";
 import axios from "axios";
-import { handleBookingData, handleCabData } from "@/lib/helper";
-import { BookingType, CabType } from "@/types";
+import { handleCabData } from "@/lib/helper";
+import {  CabType } from "@/types";
 import CabCard from "@/components/cabs/card";
 import Loader from "@/shared/Loader";
 

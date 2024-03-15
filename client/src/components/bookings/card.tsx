@@ -1,6 +1,4 @@
 import { Button } from "antd";
-import axios from "axios";
-import { User2, UserSquare } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
@@ -63,18 +61,10 @@ const BookingCard = ({
           disabled={loading}
           onClick={() => onDelete(id)}
           size="large"
-          style={{ background: "#f56565", width: "50%" }}
+          style={{ background: "#f56565", width: "100%" }}
           type="primary"
         >
           Delete
-        </Button>
-        <Button
-          disabled={loading}
-          size="large"
-          style={{ background: "#24a0ed", width: "50%" }}
-          type="primary"
-        >
-          Edit
         </Button>
       </div>
     </div>
