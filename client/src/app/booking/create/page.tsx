@@ -3,11 +3,11 @@ import React, { useId, useState } from "react";
 import { Button } from "antd";
 import axios from "axios";
 
-import CabCard from "@/components/cabs/card";
 import BookingForm from "@/components/forms/bookingForm";
 import Heading from "@/shared/Heading";
 import { CabType } from "@/types";
 import { createToast, updateErrorToast, updateSuccessToast } from "@/lib/notification";
+import ViewCabCard from "@/components/cabs/viewCab";
 
 const Page = () => {
   const key = useId();
@@ -118,7 +118,7 @@ const Page = () => {
                 <div className="grid lg:grid-cols-3 gap-6 md:grid-cols-2 grid-cols-1">
                   {cabs.map((cab: any) => {
                     return (
-                      <CabCard
+                      <ViewCabCard
                         onSelect={setSelectedCab}
                         selected={selectedCab === cab.id}
                         key={cab.id}
