@@ -7,8 +7,12 @@ export const handleBookingData = (data: any) => {
       price: booking.price,
       email: booking.email,
       cabImage: booking.cab.image,
-      startTime: new Date(booking.startTime).toLocaleString(),
-      endTime: new Date(booking.endTime).toLocaleString(),
+      startTime: new Date(booking.startTime).toLocaleString(undefined, {
+        timeZone: "Asia/Kolkata",
+      }),
+      endTime: new Date(booking.endTime).toLocaleString(undefined, {
+        timeZone: "Asia/Kolkata",
+      }),
     };
   });
 };

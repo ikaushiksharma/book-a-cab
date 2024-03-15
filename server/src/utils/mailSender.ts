@@ -37,6 +37,6 @@ export default async function sendMail({
     await transport.sendMail(mailOptions);
     return { message: 'Success!', status: 200 };
   } catch (err: any) {
-    return { message: err.message, status: 500 };
+    return new Error(err.message);
   }
 }

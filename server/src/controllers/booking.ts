@@ -34,8 +34,12 @@ export const createBooking = async (req: Request, res: Response) => {
       email,
       source,
       destination,
-      startTime: startTime.toLocaleString(),
-      endTime: newBooking.endTime.toLocaleString(),
+      startTime: startTime.toLocaleString(undefined, {
+        timeZone: 'Asia/Kolkata',
+      }),
+      endTime: newBooking.endTime.toLocaleString(undefined, {
+        timeZone: 'Asia/Kolkata',
+      }),
       price,
     });
     res.status(201).json(newBooking);
