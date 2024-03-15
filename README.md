@@ -17,6 +17,8 @@
 
 **Backend Api Hosted Link:** [Backend API](https://cabapi.kaushiksharma.tech/)
 
+**Presentation:** [Presentation](https://cdn.cosmicjs.com/d1bc76f0-e2c8-11ee-a01e-c56f185aea7b-cab-booking-presentation.pdf)
+
 This is a cab booking app, which is built using ReactJS and NodeJS. For the frontend, NextJS is used, and for the backend, NodeJS is used. The data is stored in MongoDB. The app is built to book a cab and get the shortest path and time. The user can choose the location and get the shortest path and time. The user can also choose from multiple cabs and choose the rate according to his/her own will. The user will get an email notification of booking confirmation. The admin can view all the bookings and cabs. The admin can also edit the cab pricing and details. The app is built using ReactJS, NextJS, NodeJS, MongoDB, and Nodemailer.
 
 ## 📌 Prerequisites
@@ -132,4 +134,4 @@ $ yarn build && yarn start      // for production
 
 ## BUGS
 
-[Create new Issues](https://github.com/ikaushiksharma/book-a-cab.git) (preferred)
+[Create new Issues](https://github.com/ikaushiksharma/book-a-cab.git)
