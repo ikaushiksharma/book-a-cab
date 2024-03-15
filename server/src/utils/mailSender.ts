@@ -17,21 +17,23 @@ export default async function sendMail({
   endTime: string;
   price: number;
 }) {
-  const transport = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: env.MAIL_USER,
-      pass: env.MAIL_PASS,
-    },
-  });
-  const mailOptions: Mail.Options = {
-    from: env.MAIL_USER,
-    to: email,
-    subject: `Booking Confirmed!🚀`,
-    html: htmlTemplate(source, destination, startTime, endTime, price),
-  };
-
   try {
+    const transport = nodemailer.createTransport({
+      host: env.MAIL_HOST,
+      service: env.MAIL_SERVICE,
+      secure: Boolean(env.MAIL_SECURE),
+      auth: {
+        user: env.MAIL_USER,
+        pass: env.MAIL_PASS,
+      },
+    });
+    const mailOptions: Mail.Options = {
+      from: env.MAIL_USER,
+      to: email,
+      subject: `Booking Confirmed!🚀`,
+      html: htmlTemplate(source, destination, startTime, endTime, price),
+    };
+
     await transport.sendMail(mailOptions);
     return { message: 'Success!', status: 200 };
   } catch (err: any) {
