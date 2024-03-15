@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import axios from "axios";
 import { User2, UserSquare } from "lucide-react";
 import Image from "next/image";
@@ -12,6 +13,7 @@ type Props = {
   startTime: string;
   endTime: string;
   cabImage: string;
+  loading: boolean;
   onDelete: (id: string) => void;
 };
 
@@ -24,6 +26,7 @@ const BookingCard = ({
   startTime,
   endTime,
   cabImage,
+  loading,
   onDelete,
 }: Props) => {
   return (
@@ -56,20 +59,23 @@ const BookingCard = ({
         </div>
       </div>
       <div className="p-6 flex gap-4 pt-3">
-        <button
+        <Button
+          disabled={loading}
           onClick={() => onDelete(id)}
-          className="block w-full select-none rounded-lg bg-red-500 py-2 px-4 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-          type="button"
-          data-ripple-light="true"
+          size="large"
+          style={{ background: "#f56565", width: "50%" }}
+          type="primary"
         >
           Delete
-        </button>
-        <button
-          className="block w-full select-none rounded-lg bg-blue-500 py-2 px-4 text-center align-middle font-sans text-sm font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-          type="button"
+        </Button>
+        <Button
+          disabled={loading}
+          size="large"
+          style={{ background: "#24a0ed", width: "50%" }}
+          type="primary"
         >
           Edit
-        </button>
+        </Button>
       </div>
     </div>
   );

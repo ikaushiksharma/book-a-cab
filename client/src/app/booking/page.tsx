@@ -5,10 +5,12 @@ import Heading from "@/shared/Heading";
 import axios from "axios";
 import { handleBookingData } from "@/lib/helper";
 import { BookingType } from "@/types";
+import Loader from "@/shared/Loader";
 
 type Props = {};
 
 const Page = (props: Props) => {
+  const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState<Array<BookingType>>([]);
   const fetchBookings = async () => {
     try {
@@ -20,6 +22,7 @@ const Page = (props: Props) => {
     } catch (error) {
       console.error(error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -38,6 +41,10 @@ const Page = (props: Props) => {
     }
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div className="min-h-screen pb-64 h-fit">
       <div className="flex items-center justify-center my-6">
@@ -54,6 +61,7 @@ const Page = (props: Props) => {
           {bookings.map(
             ({ source, destination, price, email, cabImage, startTime, endTime, id }) => (
               <BookingCard
+                loading={loading}
                 onDelete={handleDelete}
                 key={id}
                 id={id}

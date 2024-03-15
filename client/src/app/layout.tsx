@@ -4,6 +4,7 @@ import { DM_Sans } from "next/font/google";
 import Header from "@/components/header";
 import "./globals.css";
 import Footer from "@/components/footer";
+import Providers from "./providers";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
@@ -20,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${dmSans.className} bg-zinc-100 border max-w-screen-2xl mx-auto`}>
-        <Header />
-        {children}
-        <Footer />
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

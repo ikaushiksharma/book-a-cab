@@ -6,25 +6,34 @@ import axios from "axios";
 import { handleBookingData } from "@/lib/helper";
 import { BookingType, CabType } from "@/types";
 import CabCard from "@/components/cabs/card";
+import Loader from "@/shared/Loader";
 
 type Props = {};
 
 const Page = (props: Props) => {
+  const [loading, setLoading] = useState(true);
   const [cabs, setCabs] = useState<Array<CabType>>([]);
+  const fetchCabs = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/cab/all`);
+      console.log(response.data);
+      setCabs(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/cab/all`);
-        console.log(response.data);
-        setCabs(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+    fetchCabs();
     return () => {
       setCabs([]);
     };
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="min-h-screen pb-64 h-fit">
@@ -33,7 +42,7 @@ const Page = (props: Props) => {
           All Cabs
         </Heading>
       </div>
-      {cabs.length <= 0 ? (
+      {cabs.length === 0 ? (
         <div className="flex items-center justify-center">
           <Heading className="text-4xl">No Cabs Available</Heading>
         </div>
