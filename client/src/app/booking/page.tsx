@@ -6,11 +6,13 @@ import axios from "axios";
 import { handleBookingData } from "@/lib/helper";
 import { BookingType } from "@/types";
 import Loader from "@/shared/Loader";
+import { createToast, updateErrorToast, updateSuccessToast } from "@/lib/notification";
 
 type Props = {};
 
 const Page = (props: Props) => {
   const [loading, setLoading] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const [bookings, setBookings] = useState<Array<BookingType>>([]);
   const fetchBookings = async () => {
     try {
@@ -32,13 +34,18 @@ const Page = (props: Props) => {
     };
   }, []);
   const handleDelete = async (id: string) => {
+    setDisabled(true);
+    const toast = createToast("Loading!");
     try {
       const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_API}/booking/${id}`);
       console.log(response.data);
       await fetchBookings();
+      updateSuccessToast(toast, "Deleted Successfully!");
     } catch (error) {
+      updateErrorToast(toast, "Something went wrong!");
       console.error(error);
     }
+    setDisabled(false);
   };
 
   if (loading) {

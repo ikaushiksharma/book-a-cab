@@ -18,7 +18,7 @@ type Props = {
 const CabCard = ({ id, image, name, price, updated, setUpdated }: Props) => {
   const [editingMode, setEditingMode] = React.useState(false);
   const onFinish = async (values: any) => {
-    const toast = createToast("loading");
+    const toast = createToast("Loading!");
     try {
       const response = await axios.put(`${process.env.NEXT_PUBLIC_BACKEND_API}/cab/${id}`, values);
       console.log(response);

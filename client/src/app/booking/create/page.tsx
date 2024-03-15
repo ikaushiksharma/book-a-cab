@@ -12,7 +12,7 @@ import ViewCabCard from "@/components/cabs/viewCab";
 const Page = () => {
   const key = useId();
   const [cabs, setCabs] = useState<null | Array<CabType>>(null);
-  const [data, setData] = useState<{ email: string; source: string; destination: string }>();
+  const [data, setData] = useState<{ email: string; source: string; destination: string } | null>();
   const [minTime, setMinTime] = useState(-1);
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
@@ -21,7 +21,7 @@ const Page = () => {
   const getAvailableCabs = async () => {
     setLoading(true);
     setDisabled(true);
-    const toast = createToast("loading");
+    const toast = createToast("Loading!");
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_API}/cab/available-cabs`);
       console.log(response);
@@ -36,12 +36,15 @@ const Page = () => {
   };
 
   const handleSubmit = async () => {
-    const toast = createToast("loading");
+    const toast = createToast("Loading!");
     try {
       setLoading(true);
-      if (!data || !selectedCab) {
-        throw new Error("Data not available");
+      if (!selectedCab || !data) {
+        updateErrorToast(toast, "Please Provide All Fields");
+        setLoading(false);
+        return;
       }
+
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/booking/create`, {
         ...data,
         cabId: selectedCab,
@@ -51,15 +54,17 @@ const Page = () => {
       getAvailableCabs();
       setDisabled(false);
     } catch (error) {
-      updateErrorToast(toast, "something went wrong");
-      console.error(error);
+      console.log(error);
+
+      updateErrorToast(toast, "Something Went Wrong");
     }
+    handleReset();
     setLoading(false);
   };
 
   const getShortestTime = async (data: any) => {
     setLoading(true);
-    const toast = createToast("loading");
+    const toast = createToast("Loading!");
     try {
       console.log(data);
       const response = await axios.post(
@@ -78,6 +83,7 @@ const Page = () => {
   };
   const handleReset = () => {
     setMinTime(-1);
+    setData(null);
     setCabs(null);
     setSelectedCab(null);
   };
