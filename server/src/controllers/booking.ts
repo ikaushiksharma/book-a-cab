@@ -90,6 +90,7 @@ export const cancelBooking = async (req: Request, res: Response) => {
       $pull: {
         bookings: req.params.id,
       },
+      availableFrom: null,
     });
 
     res.status(200).json({ message: 'Booking cancelled successfully.' });
